@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "KAGAMI — HTML を正確にレンダリングして画像へ変換するブラウザ完結型コンバータ (Satoru + jSquash)",
   "type": "module",
-  "packageManager": "pnpm@12.11.2",
+  "packageManager": "pnpm@12.13.0",
   "scripts": {
     "setup": "node scripts/setup-assets.mjs",
     "dev": "vite",
@@ -38,7 +38,8 @@
     "prettier": "3.9.10",
     "typescript": "5.9.3",
     "typescript-eslint": "8.71.2",
-    "vite": "8.3.4"
+    "vite": "8.3.4",
+    "wrangler": "4.151.0"
   },
   "engines": {
     "node": ">=20.19.0"
