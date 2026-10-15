@@ -5,13 +5,13 @@
 
 ![preview](docs/screenshots/preview.png)
 
-| | |
-| --- | --- |
-| 出力形式 | SVG / PNG / JPEG / WebP / AVIF |
-| 圧縮モード | 可逆(ピクセル完全一致を検証)/ 非可逆(品質 % スライダー) |
-| キャンバス | 横幅 px のみ指定・縦は内容全文の高さを自動検出 |
-| 実行環境 | モダンブラウザ(Chrome / Edge 等)。サーバー不要・アップロード不要 |
-| パッケージマネージャ | pnpm |
+|                      |                                                                  |
+| -------------------- | ---------------------------------------------------------------- |
+| 出力形式             | SVG / PNG / JPEG / WebP / AVIF                                   |
+| 圧縮モード           | 可逆(ピクセル完全一致を検証)/ 非可逆(品質 % スライダー)          |
+| キャンバス           | 横幅 px のみ指定・縦は内容全文の高さを自動検出                   |
+| 実行環境             | モダンブラウザ(Chrome / Edge 等)。サーバー不要・アップロード不要 |
+| パッケージマネージャ | pnpm                                                             |
 
 ---
 
@@ -44,10 +44,10 @@ Satoru(Skia)はシステムフォントを持たないため、Noto Sans JP Vari
 
 ## 必要環境
 
-| ツール | バージョン |
-| --- | --- |
-| Node.js | ^20.19.0 \|\| >=22.12.0 |
-| pnpm | >=12(`packageManager` フィールドで固定) |
+| ツール   | バージョン                                                           |
+| -------- | -------------------------------------------------------------------- |
+| Node.js  | ^20.19.0 \|\| >=22.12.0                                              |
+| pnpm     | >=12(`packageManager` フィールドで固定)                              |
 | ブラウザ | WebAssembly + Web Workers + OffscreenCanvas 対応(Chrome / Edge 推奨) |
 
 ## セットアップ
@@ -68,17 +68,17 @@ pnpm run preview         # dist/ をローカル配信
 
 ## スクリプト一覧
 
-| コマンド | 内容 |
-| --- | --- |
-| `pnpm run setup` | 静的アセット生成(フォントサブセット・索引) |
-| `pnpm run dev` | Vite 開発サーバー |
-| `pnpm run build` | 本番ビルド |
-| `pnpm run preview` | ビルドのローカル配信 |
-| `pnpm run test` | 下記 2 つの検証を連続実行 |
-| `pnpm run test:node` | ヘッドレスパイプライン検証(Node・DOM 不要) |
-| `pnpm run test:e2e` | 実 Chromium による E2E 検証(UI 操作・ダウンロード・マジックバイト) |
-| `pnpm run lint` / `lint:check` | ESLint(flat config)+ typescript-eslint |
-| `pnpm run format` / `format:check` | Prettier |
+| コマンド                           | 内容                                                               |
+| ---------------------------------- | ------------------------------------------------------------------ |
+| `pnpm run setup`                   | 静的アセット生成(フォントサブセット・索引)                         |
+| `pnpm run dev`                     | Vite 開発サーバー                                                  |
+| `pnpm run build`                   | 本番ビルド                                                         |
+| `pnpm run preview`                 | ビルドのローカル配信                                               |
+| `pnpm run test`                    | 下記 2 つの検証を連続実行                                          |
+| `pnpm run test:node`               | ヘッドレスパイプライン検証(Node・DOM 不要)                         |
+| `pnpm run test:e2e`                | 実 Chromium による E2E 検証(UI 操作・ダウンロード・マジックバイト) |
+| `pnpm run lint` / `lint:check`     | ESLint(flat config)+ typescript-eslint                             |
+| `pnpm run format` / `format:check` | Prettier                                                           |
 
 ## 使い方
 
