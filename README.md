@@ -46,8 +46,8 @@ Satoru(Skia)はシステムフォントを持たないため、Noto Sans JP Vari
 
 | ツール   | バージョン                                                           |
 | -------- | -------------------------------------------------------------------- |
-| Node.js  | ^20.19.0 \|\| >=22.12.0                                              |
-| pnpm     | >=12(`packageManager` フィールドで固定)                              |
+| Node.js  | >=20.19.0(開発・検証は **v26.12.0 LTS** で実施)                      |
+| pnpm     | 12.11.2(`packageManager` フィールドで固定)                           |
 | ブラウザ | WebAssembly + Web Workers + OffscreenCanvas 対応(Chrome / Edge 推奨) |
 
 ## セットアップ

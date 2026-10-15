@@ -1,6 +1,6 @@
 # KAGAMI 動作検証レポート
 
-検証日: 2026-10-15 / 環境: Debian 12 (bookworm), Chromium 155.0.8059.39, Node v20.20.2, 2 vCPU / 1 GB RAM
+検証日: 2026-10-15 / 環境: Debian 12 (bookworm), Chromium 155.0.8059.39, Node v26.12.0 (LTS) / pnpm 12.11.2 / Vite 8.3.4, 2 vCPU / 1 GB RAM
 サンプル: `assets/sample.html` (日本語テキスト + grid + gradient + border、1280 px 幅で 1280×898)
 
 ## 1. ヘッドレスパイプライン検証 (`npm run test:node`)
