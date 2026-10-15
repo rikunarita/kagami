@@ -46,7 +46,7 @@ Satoru(Skia)はシステムフォントを持たないため、Noto Sans JP Vari
 
 | ツール   | バージョン                                                           |
 | -------- | -------------------------------------------------------------------- |
-| Node.js  | >=20.19.0(開発・検証は **v26.12.0 LTS** で実施)                      |
+| Node.js  | >=20.19.0(開発・検証は **v26.12.0**(Current)で実施)                  |
 | pnpm     | 12.11.2(`packageManager` フィールドで固定)                           |
 | ブラウザ | WebAssembly + Web Workers + OffscreenCanvas 対応(Chrome / Edge 推奨) |
 
@@ -127,44 +127,6 @@ assets/sample.html      検証用サンプルドキュメント
 docs/screenshots/       UI スクリーンショット
 REPORT.md               動作検証レポート (実測値)
 ```
-
-## デプロイ: Cloudflare
-
-KAGAMI は**完全クライアントサイド**で動作するため、Cloudflare では静的サイトとしてホストします(Workers / COOP・COEP は不要)。
-
-### A. ダッシュボード(Git 統合)— 推奨
-
-1. GitHub リポジトリ(本リポジトリ)を Cloudflare に接続:
-   **Cloudflare Dashboard → Workers & Pages → Create application → Pages → Connect to Git** → `rikunarita/kagami` を選択。
-2. ビルド設定:
-
-   | 項目                   | 値                                                                                                              |
-   | ---------------------- | --------------------------------------------------------------------------------------------------------------- |
-   | Framework preset       | `None`                                                                                                          |
-   | Build command          | `pnpm run setup && pnpm run build`                                                                              |
-   | Build output directory | `dist`                                                                                                          |
-   | Environment variable   | `NODE_VERSION=26.12.0`(Vite 8 は Node >=20.19 必須。プラットフォーム側で 26 が選べない場合は利用可能な >=22.12) |
-   - pnpm は `packageManager` フィールドを検知して Cloudflare 側(corepack)が自動有効化します。
-   - **`pnpm run setup`(フォントアセット生成)は build より前に必ず実行する必要**があるため、ビルドコマンドに含めています。
-
-3. **Save and Deploy**。初回ビルド後 `https://<project>.pages.dev` で公開。
-4. 検証: `curl -sI https://<project>.pages.dev/` で 200 と MIME を確認(`.wasm` は `application/wasm` で配信されます)。
-5. カスタムドメインは Pages プロジェクトの **Custom domains** から。
-
-補足: 大きめのアセット(Satoru ワーカー約 10 MB / Skia WASM 約 7.6 MB)は Pages のファイルあたり上限(25 MiB)内であり、エッジに不変キャッシュされます。
-
-### B. Wrangler CLI(直接デプロイ)
-
-```bash
-pnpm install && pnpm run setup && pnpm run build
-pnpm exec wrangler login                 # 初回のみ
-pnpm exec wrangler pages project create kagami   # 初回のみ
-pnpm exec wrangler pages deploy dist --project-name=kagami
-```
-
-### C. (応用)エッジでのサーバーサイド生成
-
-`satoru-render` は `workerd` エントリポイントを提供するため、Cloudflare Workers 上での OGP 画像生成も可能です。本リポジトリはプライバシー方針(アップロード不要)によりブラウザ完結構成を採用しています。
 
 ## 動作検証
 
