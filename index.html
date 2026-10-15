@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KAGAMI — HTMLを画像に変換</title>
+    <meta
+      name="description"
+      content="KAGAMI は Satoru (Skia WASM) レンダリングエンジンと jSquash コーデックを用いた、ブラウザ完結の HTML → 画像コンバータです。SVG / PNG / JPEG / WebP / AVIF 出力、可逆・非可逆圧縮に対応。"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a0a0a' stroke-width='1.5'%3E%3Cpath d='M12 3v18'/%3E%3Cpath d='M7 6.5 4 12l3 5.5'/%3E%3Cpath d='M17 6.5 20 12l-3 5.5'/%3E%3Crect x='8.5' y='6.5' width='7' height='11' rx='1'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <header class="top">
+        <div class="brand">
+          <i data-ic="mark"></i>
+          <span class="name">KAGAMI</span>
+          <span class="sub">HTML → IMAGE</span>
+        </div>
+        <div class="chips">
+          <span class="chip" id="chipEngine"><span class="dot"></span><span id="chipEngineTx">ENGINE BOOT</span></span>
+          <span class="chip" id="chipWorkers"><span class="dot"></span><span id="chipWorkersTx">WORKERS 0</span></span>
+          <span class="chip" id="chipFonts"><span class="dot"></span><span id="chipFontsTx">FONTS 0</span></span>
+        </div>
+      </header>
+      <main>
+        <aside id="panel">
+          <section class="grp">
+            <h2><i data-ic="file"></i>SOURCE</h2>
+            <div id="drop" class="drop" tabindex="0" role="button" aria-label="HTMLファイルを選択">
+              <i data-ic="upload"></i>
+              <p>HTMLファイルをドロップ / クリックで選択</p>
+              <span>.html / .htm / .txt</span>
+              <input id="fileInput" type="file" accept=".html,.htm,.txt,text/html" hidden />
+            </div>
+            <div id="fileMeta" class="filemeta" hidden>
+              <i data-ic="file"></i>
+              <span class="nm" id="fileName"></span>
+              <span class="sz" id="fileSize"></span>
+              <button class="iconbtn" id="clearFile" title="ファイルを解除"><i data-ic="x"></i></button>
+            </div>
+          </section>
+
+          <section class="grp">
+            <h2><i data-ic="width"></i>CANVAS</h2>
+            <div class="row">
+              <input id="width" type="number" min="80" max="8000" step="10" value="1280" aria-label="横幅ピクセル" />
+              <span class="unit">px</span>
+              <span class="unit" style="margin-left: auto">縦: 全文自動</span>
+            </div>
+            <div class="presets" id="widthPresets">
+              <button class="preset" data-w="480">480</button>
+              <button class="preset" data-w="800">800</button>
+              <button class="preset" data-w="1080">1080</button>
+              <button class="preset on" data-w="1280">1280</button>
+              <button class="preset" data-w="1920">1920</button>
+            </div>
+          </section>
+
+          <section class="grp">
+            <h2><i data-ic="image"></i>OUTPUT</h2>
+            <div class="seg" id="formatSeg">
+              <button data-f="svg"><i data-ic="wave"></i>SVG</button>
+              <button data-f="png" class="on"><i data-ic="image"></i>PNG</button>
+              <button data-f="jpeg"><i data-ic="image"></i>JPEG</button>
+              <button data-f="webp"><i data-ic="image"></i>WebP</button>
+              <button data-f="avif"><i data-ic="image"></i>AVIF</button>
+            </div>
+            <div class="seg" id="modeSeg">
+              <button data-m="lossless" class="on"><i data-ic="lock"></i>可逆</button>
+              <button data-m="lossy"><i data-ic="gauge"></i>非可逆</button>
+            </div>
+            <div id="modeNote" class="note" hidden></div>
+            <div class="row sliderrow" id="qualityRow" hidden>
+              <label for="quality">品質</label>
+              <input id="quality" type="range" min="1" max="100" step="1" value="85" />
+              <output id="qualityVal">85%</output>
+            </div>
+            <div class="seg" id="effortSeg">
+              <button data-e="balanced">標準</button>
+              <button data-e="high" class="on">高</button>
+              <button data-e="extreme">極限</button>
+            </div>
+            <p class="hint" id="effortHint"></p>
+          </section>
+
+          <section class="grp">
+            <h2><i data-ic="sliders"></i>ADVANCED</h2>
+            <label class="check"><input type="checkbox" id="bgToggle" /><span>背景色を固定</span></label>
+            <div class="row">
+              <input type="color" id="bgColor" value="#ffffff" disabled /><span class="unit">キャンバス背景 (透明なし)</span>
+            </div>
+            <label class="check"><input type="checkbox" id="textPaths" checked /><span>SVGテキストをパス化 (フォント埋込不要)</span></label>
+            <label class="check"><input type="checkbox" id="external" checked /><span>外部リソース取得 (CacheStorage経由)</span></label>
+            <div class="row">
+              <label class="unit" for="workers">レンダーワーカー</label>
+              <input id="workers" type="number" min="1" max="8" value="4" style="width: 64px" />
+              <span class="unit" id="coreInfo"></span>
+            </div>
+          </section>
+        </aside>
+
+        <section id="stage">
+          <div class="toolbar">
+            <span class="mono" id="dims">—</span>
+            <span class="badge" id="viaBadge" hidden></span>
+            <div class="spacer"></div>
+            <button class="iconbtn on" id="zoomFit" title="フィット"><i data-ic="fit"></i></button>
+            <button class="iconbtn" id="zoom100" title="等倍"><i data-ic="one"></i></button>
+          </div>
+          <div id="canvasWrap" class="checker">
+            <div id="emptyStage">
+              <i data-ic="layers"></i>
+              <p>HTMLファイルを読み込むとプレビューがここに表示されます</p>
+            </div>
+            <div id="scroll" hidden><img id="preview" alt="レンダリングプレビュー" /></div>
+          </div>
+          <div class="actionbar">
+            <button class="primary" id="encodeBtn" disabled><i data-ic="zap"></i><span>エンコード</span></button>
+            <button class="ghost" id="downloadBtn" disabled><i data-ic="download"></i><span>ダウンロード</span></button>
+            <div class="resultmeta mono" id="resultMeta"></div>
+            <div class="spacer"></div>
+            <button class="iconbtn" id="telemetryBtn" title="テレメトリ"><i data-ic="cpu"></i></button>
+          </div>
+          <div class="telemetry" id="telemetry" hidden>
+            <div class="tcols">
+              <div>
+                <h3>Pipeline</h3>
+                <ul id="stageList"></ul>
+              </div>
+              <div>
+                <h3>Encoder candidates</h3>
+                <table class="mono" id="candTable">
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div>
+                <h3>Satoru pool</h3>
+                <ul id="poolList"></ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <div class="toast" id="toast" hidden></div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

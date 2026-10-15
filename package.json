@@ -1,0 +1,43 @@
+{
+  "name": "kagami",
+  "private": true,
+  "version": "1.0.0",
+  "description": "KAGAMI — HTML を正確にレンダリングして画像へ変換するブラウザ完結型コンバータ (Satoru + jSquash)",
+  "type": "module",
+  "packageManager": "pnpm@12.11.2",
+  "scripts": {
+    "setup": "node scripts/setup-assets.mjs",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "pnpm run test:node && pnpm run test:e2e",
+    "test:node": "node tests/node-engine.mjs",
+    "test:e2e": "node tests/e2e.mjs",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@jsquash/avif": "2.1.1",
+    "@jsquash/jpeg": "1.6.0",
+    "@jsquash/oxipng": "2.3.0",
+    "@jsquash/png": "3.1.1",
+    "@jsquash/webp": "1.5.0",
+    "satoru-render": "1.0.15",
+    "wasm-feature-detect": "^1.9.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@fontsource-variable/noto-sans-jp": "5.3.1",
+    "esbuild": "^0.28.2",
+    "eslint": "10.12.0",
+    "geist": "1.7.2",
+    "globals": "17.13.0",
+    "playwright-core": "1.64.1",
+    "prettier": "3.9.10",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.2",
+    "vite": "8.3.4"
+  }
+}

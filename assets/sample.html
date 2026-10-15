@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Noto Sans JP", sans-serif;
+        background: #0e1116;
+        color: #e9edf3;
+      }
+      .page {
+        padding: 56px 64px 64px;
+      }
+      .kicker {
+        font-size: 12px;
+        letter-spacing: 0.38em;
+        text-transform: uppercase;
+        color: #7d8899;
+        font-weight: 300;
+        margin: 0 0 18px;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 52px;
+        font-weight: 200;
+        letter-spacing: -0.02em;
+      }
+      h1 em {
+        font-style: normal;
+        color: #6ea8fe;
+      }
+      .lead {
+        margin: 0 0 40px;
+        max-width: 62ch;
+        font-size: 15px;
+        line-height: 2;
+        font-weight: 300;
+        color: #aeb9c9;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 36px;
+      }
+      .card {
+        border: 1px solid #232a35;
+        border-radius: 14px;
+        padding: 22px;
+        background: linear-gradient(160deg, #151b24, #10151d);
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+      }
+      .card p {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.9;
+        color: #8fa0b5;
+        font-weight: 300;
+      }
+      .card.accent {
+        background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+        border-color: transparent;
+      }
+      .card.accent p {
+        color: #dbe6ff;
+      }
+      .metrics {
+        display: flex;
+        gap: 42px;
+        padding: 26px 4px;
+        border-top: 1px solid #1d2430;
+        border-bottom: 1px solid #1d2430;
+      }
+      .metric b {
+        display: block;
+        font-size: 30px;
+        font-weight: 200;
+        letter-spacing: -0.01em;
+      }
+      .metric span {
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        color: #7d8899;
+      }
+      .cols {
+        display: flex;
+        gap: 40px;
+        margin-top: 34px;
+      }
+      .cols section {
+        flex: 1;
+      }
+      .cols h4 {
+        margin: 0 0 10px;
+        font-size: 13px;
+        font-weight: 400;
+        color: #cfe0ff;
+      }
+      .cols p {
+        margin: 0;
+        font-size: 12px;
+        line-height: 2;
+        color: #93a2b7;
+        font-weight: 300;
+      }
+      .tag {
+        display: inline-block;
+        margin: 0 6px 6px 0;
+        padding: 4px 10px;
+        border: 1px solid #2a3342;
+        border-radius: 999px;
+        font-size: 11px;
+        color: #9fb4d8;
+        font-weight: 300;
+      }
+      footer {
+        margin-top: 44px;
+        font-size: 11px;
+        color: #5d6a7c;
+        letter-spacing: 0.12em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <p class="kicker">Rendering Sample Document</p>
+      <h1>鏡 <em>KAGAMI</em> — HTMLを画像へ</h1>
+      <p class="lead">
+        このドキュメントはレンダリング検証用のサンプルです。日本語テキスト、グリッドレイアウト、
+        グラデーション、ボーダー、タイポグラフィの各要素を含みます。Satoru エンジンは Skia 上で CSS
+        レイアウトを計算し、ベクトル経由でラスター画像を生成します。
+      </p>
+      <div class="grid">
+        <div class="card accent">
+          <h3>Vector Pass</h3>
+          <p>レイアウト結果は SVG ベクトルとして出力され、任意のコーデックへ単一パスでラスター化されます。</p>
+        </div>
+        <div class="card">
+          <h3>Parallel Encode</h3>
+          <p>エンコーダ候補はワーカープールへ分散され、最小バイトを達成した候補が採用されます。</p>
+        </div>
+        <div class="card">
+          <h3>Layout Reuse</h3>
+          <p>解析済みのドキュメントインスタンスを保持し、幅変更時はレイアウトのみを再計算します。</p>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><b>5</b><span>FORMATS</span></div>
+        <div class="metric"><b>2</b><span>MODES</span></div>
+        <div class="metric"><b>0</b><span>UPLOADS</span></div>
+        <div class="metric"><b>100%</b><span>IN-BROWSER</span></div>
+      </div>
+      <div class="cols">
+        <section>
+          <h4>可逆圧縮</h4>
+          <p>
+            PNG / WebP / AVIF
+            ではピクセル完全一致を保証します。エンコード後はデコードして元画像と突合し、一致が確認できた場合のみ「検証済」として報告されます。
+          </p>
+          <div style="margin-top: 14px">
+            <span class="tag">oxipng</span><span class="tag">libwebp lossless</span><span class="tag">libavif lossless</span>
+          </div>
+        </section>
+        <section>
+          <h4>非可逆圧縮</h4>
+          <p>
+            品質スライダーの値をそのままエンコーダへ渡しつつ、Treillis
+            探索や複数パスなどの追加最適化を並列で試し、同一品質での最小出力を選択します。
+          </p>
+          <div style="margin-top: 14px">
+            <span class="tag">mozjpeg</span><span class="tag">libwebp</span><span class="tag">libavif</span>
+          </div>
+        </section>
+      </div>
+      <footer>KAGAMI SAMPLE — SATORU + JSQUASH PIPELINE</footer>
+    </div>
+  </body>
+</html>
